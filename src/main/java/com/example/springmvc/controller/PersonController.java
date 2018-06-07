@@ -41,7 +41,6 @@ public class PersonController {
     	EmailValidator emailValid = new EmailValidator();
     	Boolean ok = emailValid.isValid(person.getEmail(), null);
     	String message = "Email not valid";
-    	System.out.println("ok="+ok);
     	if(!ok) {
 			model.addAttribute("message",message);
 			//return "message";

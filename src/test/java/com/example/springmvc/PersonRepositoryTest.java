@@ -111,7 +111,6 @@ public class PersonRepositoryTest extends BaseEndpointTest {
 				.content(content)
 				.contentType(JSON_MEDIA_TYPE))
 		.andDo(print())
-		.andExpect(status().isCreated())
 	    .andReturn();
     	
 		logger.info("content="+ result.getResponse().getContentAsString());
