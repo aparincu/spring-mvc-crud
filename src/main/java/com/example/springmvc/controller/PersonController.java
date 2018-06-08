@@ -14,78 +14,77 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class PersonController {
 
-    private PersonRepository personRepository;
-   
+	private PersonRepository personRepository;
 
-    @Autowired
-    public void setPersonRepository(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-    
-  
-
+	@Autowired
+	public void setPersonRepository(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
 
 	@RequestMapping(path = "/")
-    public String index() {
-        return "index";
-    }
+	public String index() {
+		return "index";
+	}
 
-    @RequestMapping(path = "/persons/add", method = RequestMethod.GET)
-    public String createPerson(Model model) {
-        model.addAttribute("person", new Person());
-        return "edit";
-    }
+	@RequestMapping(path = "/persons/add", method = RequestMethod.GET)
+	public String createPerson(Model model) {
+		model.addAttribute("person", new Person());
+		return "edit";
+	}
 
-    @RequestMapping(path = "persons", method = RequestMethod.POST)
-    public String savePerson(Model model,Person person) {
-    	EmailValidator emailValid = new EmailValidator();
-    	Boolean ok = emailValid.isValid(person.getEmail(), null);
-    	String message = "Email not valid";
-    	if(!ok) {
-			model.addAttribute("message",message);
-			//return "message";
-    	}
-    	try {
-    		String message1 = "Save with succes";
-    		this.isDuplicateEmail(person);
-    		model.addAttribute("message",message1);
-    	}catch(Exception e) {
-    		e.getMessage();
-    	}
-    	
-        return "message";
-    	
-    }
+	@RequestMapping(path = "persons", method = RequestMethod.POST)
+	public String savePerson(Model model, Person person) {
+		EmailValidator emailValid = new EmailValidator();
+		Boolean ok = emailValid.isValid(person.getEmail(), null);
+		String message = "Email not valid";
+		if (!ok) {
+			model.addAttribute("message", message);
+			return "message";
+		}
+		try {
+			String message1 = "Save with succes";
+			this.isDuplicateEmail(person);
+			model.addAttribute("message", message1);
+		} catch (Exception e) {
+			e.getMessage();
+		}
 
-    @RequestMapping(path = "/persons", method = RequestMethod.GET)
-    public String getAllPersons(Model model) {
-        model.addAttribute("persons", personRepository.findAll());
-        return "persons";
-    }
+		return "message";
 
-    @RequestMapping(path = "/persons/edit/{id}", method = RequestMethod.GET)
-    public String editPerson(Model model, @PathVariable(value = "id") String id) {
-        model.addAttribute("person", personRepository.findOne(id));
-        return "edit";
-    }
+	}
 
-    @RequestMapping(path = "/persons/delete/{id}", method = RequestMethod.GET)
-    public String deletePerson(@PathVariable(name = "id") String id) {
-        personRepository.delete(id);
-        return "redirect:/persons";
-    }
-    
-    public void isDuplicateEmail(Person person) {
-    	Person personOptional = personRepository.findByEmail(person.getEmail());
-    	if (personOptional != null) {
+	@RequestMapping(path = "/persons", method = RequestMethod.GET)
+	public String getAllPersons(Model model) {
+		model.addAttribute("persons", personRepository.findAll());
+		return "persons";
+	}
+
+	@RequestMapping(path = "/persons/edit/{id}", method = RequestMethod.GET)
+	public String editPerson(Model model, @PathVariable(value = "id") String id) {
+		model.addAttribute("person", personRepository.findOne(id));
+		return "edit";
+	}
+
+	@RequestMapping(path = "/persons/delete/{id}", method = RequestMethod.GET)
+	public String deletePerson(Model model, @PathVariable(name = "id") String id) {
+		personRepository.delete(id);
+		String message = "Delete with succes";
+		model.addAttribute("message", message);
+		return "message";
+		// return "redirect:/persons";
+	}
+
+	public void isDuplicateEmail(Person person) {
+		Person personOptional = personRepository.findByEmail(person.getEmail());
+		if (personOptional != null) {
 			person.setId(personOptional.getId());
 			personOptional.setId(person.getId());
 			personOptional.setName(person.getName());
 			personOptional.setEmail(person.getEmail());
-		    personRepository.save(personOptional);			
-		
+			personRepository.save(personOptional);
+
 		} else {
 			personRepository.save(person);
 		}
-    }
+	}
 }
