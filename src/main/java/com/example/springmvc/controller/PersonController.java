@@ -69,7 +69,6 @@ public class PersonController {
 		personRepository.delete(id);
 		String message = "Delete with succes";
 		model.addAttribute("message", message);
-		System.out.println("message = " + message);
 		return "redirect:/persons";
 	}
 

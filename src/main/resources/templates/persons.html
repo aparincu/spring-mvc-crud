@@ -5,9 +5,17 @@
     <th:block th:include="layout/header"></th:block>
 </head>
 <body>
-<div class ="container">
- <div style="font-size:50" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>       
-</div>
+
+
+<script th:inline="javascript">
+
+  
+  var message = "Delete with succes"; 
+  alert(message); 
+  
+
+</script>
+
 <div class="container"> 
     <div class="form-group" align="center">
           <div style="font-size:50" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
