@@ -5,6 +5,7 @@
     <th:block th:include="layout/header"></th:block>
 </head>
 <body>
+
 <div class="container">
     <h2>Input Person Details</h2>
     <div>
@@ -29,12 +30,16 @@
            
             <div class="form-group">
                 <div class="col-sm-2">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Save</button>                 
                 </div>
+                <h2>
+                   <div style="font-size=50" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
+                </h2>
             </div>
 
         </form>
     </div>
 </div>
+
 </body>
 </html>

@@ -39,17 +39,16 @@ public class PersonController {
 		String message = "Email not valid";
 		if (!ok) {
 			model.addAttribute("message", message);
-			return "message";
-		}
-		try {
+			//return "message";
+			return "edit";
+		}else {
 			String message1 = "Save with succes";
 			this.isDuplicateEmail(person);
 			model.addAttribute("message", message1);
-		} catch (Exception e) {
-			e.getMessage();
+			return "edit";
 		}
-
-		return "message";
+		
+		
 
 	}
 
@@ -70,8 +69,8 @@ public class PersonController {
 		personRepository.delete(id);
 		String message = "Delete with succes";
 		model.addAttribute("message", message);
-		return "message";
-		// return "redirect:/persons";
+		System.out.println("message = " + message);
+		return "redirect:/persons";
 	}
 
 	public void isDuplicateEmail(Person person) {
@@ -88,3 +87,7 @@ public class PersonController {
 		}
 	}
 }
+
+
+
+
